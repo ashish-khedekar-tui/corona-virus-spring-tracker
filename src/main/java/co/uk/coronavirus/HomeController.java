@@ -14,7 +14,7 @@ public class HomeController
    private CoronaVirusTrackerService coronaVirusTrackerService;
 
 
-   @GetMapping("/home")
+   @GetMapping("/")
    public String home(final Model model)
    {
       model.addAttribute("locationStats", coronaVirusTrackerService.getLocationStatsList());
