@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Corona Virus Stats</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+
+    <div class="jumbotron">
+        <h1 class="display-4">Corona Virus Stats</h1>
+        <p class="lead">This page displays current corona virus stats, updated every hour</p>
+        <hr class="my-4">
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th> Country </th>
+                <th> State </th>
+                <th> Latest reported cases </th>
+                <th> Cases Reported In Last Week </th>
+                <th> Cases Reported In Last Day </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:if="${locationStats.empty}">
+                <td colspan="2"> No Stats Available </td>
+            </tr>
+            <tr th:each="locationStat : ${locationStats}">
+                <td><span th:text="${locationStat.country}"></span></td>
+                <td><span th:text="${locationStat.state}"></span></td>
+                <td><span th:text="${locationStat.totalReportedCases}">0</span></td>
+                <td><span th:text="${locationStat.casesReportedInLastWeek}">0</span></td>
+                <td><span th:text="${locationStat.casesReportedInLastDay}">0</span></td>
+
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
