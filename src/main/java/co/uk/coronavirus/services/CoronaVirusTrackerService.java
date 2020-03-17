@@ -3,6 +3,9 @@ package co.uk.coronavirus.services;
 import co.uk.coronavirus.models.LocationStats;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -18,13 +21,18 @@ import java.util.*;
 public class CoronaVirusTrackerService
 {
 
+   final static Logger LOG = LoggerFactory.getLogger(CoronaVirusTrackerService.class);
+
    private static final String CORONA_VIRUS_CONFIRMED_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv";
 
    private Set<LocationStats> locationStatsList = new TreeSet<>();
 
    @PostConstruct
+   @Scheduled(cron = "* 0/5 * * *")
    public void fetchStats() throws IOException, InterruptedException
    {
+
+      LOG.info("Fetching stats... ");
 
       final HttpClient httpClient = HttpClient.newBuilder().build();
 
