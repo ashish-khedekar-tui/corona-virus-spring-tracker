@@ -28,7 +28,7 @@ public class CoronaVirusTrackerService
    private Set<LocationStats> locationStatsList = new TreeSet<>();
 
    @PostConstruct
-   @Scheduled(cron = "* 0/5 * * *")
+   @Scheduled(cron = "* 0/5 * * * *")
    public void fetchStats() throws IOException, InterruptedException
    {
 
