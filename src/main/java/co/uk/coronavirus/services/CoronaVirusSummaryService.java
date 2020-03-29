@@ -4,9 +4,9 @@ import co.uk.coronavirus.generated.CoronaVirusSummary;
 
 import java.io.IOException;
 
-public interface CoronaVirusTrackerService
+public interface CoronaVirusSummaryService
 {
-   void fetchStats() throws IOException, InterruptedException;
 
    CoronaVirusSummary getCoronaVirusSummary() throws IOException, InterruptedException;
+
 }
