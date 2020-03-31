@@ -4,6 +4,8 @@ import co.uk.coronavirus.comparators.ComparisonCriteria;
 import co.uk.coronavirus.comparators.CountryComparator;
 import co.uk.coronavirus.generated.CoronaVirusSummary;
 import co.uk.coronavirus.services.CoronaVirusTrackerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
@@ -15,11 +17,16 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.TimeZone;
+import java.util.Date;
 
 @Controller
 public class HomeController
 {
+   private static final Logger LOG = LoggerFactory.getLogger(HomeController.class);
+
+   private static final SimpleDateFormat DATE_FORMAT_WS = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+   private static final SimpleDateFormat DATE_FORMAT_APPLICATION = new SimpleDateFormat("dd-MM-yyyy");
+
    @Autowired
    @Qualifier (value = "postmanCoronaVirusTrackerService")
    private CoronaVirusTrackerService coronaVirusTrackerService;
@@ -50,11 +57,8 @@ public class HomeController
                .stream().max(new CountryComparator(ComparisonCriteria.NEW_CONFIRMED))
                .ifPresent(country -> model.addAttribute("newConfirmed", String.format("Max New Confirmed - %s - %s ", country.getCountry(), country.getNewConfirmed())));
 
-      //2020-03-29T02:07:26.174102617Z
-      final SimpleDateFormat simpleDateFormatOriginal = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-      final SimpleDateFormat simpleDateFormatFormatted = new SimpleDateFormat("dd-MM-yyyy");
-      model.addAttribute("lastUpdatedTime", simpleDateFormatFormatted.format(simpleDateFormatOriginal.parse(coronaVirusSummary.getDate())));
-
+      final String sanitizedDate = coronaVirusSummary.getDate().substring(0, 23) + "Z";
+      model.addAttribute("lastUpdatedTime", DATE_FORMAT_APPLICATION.format(DATE_FORMAT_WS.parse(sanitizedDate)));
       model.addAttribute("hostAddress", InetAddress.getLocalHost().getHostAddress());
 
       return "home";
