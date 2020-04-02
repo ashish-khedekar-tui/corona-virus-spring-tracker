@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/v1/coronavirus")
@@ -28,9 +30,13 @@ public class HomeRestController
    public int getDeathCount(@PathVariable final String country) throws IOException, InterruptedException
    {
       LOG.debug("Requested deaths for [{}] ", country);
-      final String countrySlug = countriesCache.getSlugFor(country != null ? country.toUpperCase() : "");
-      LOG.debug("The slug for the country [{}] is [{}] ", country, countrySlug);
-      return deathCountCache.getDeathCountFor(countrySlug);
+      if (country != null)
+      {
+         final String decodedCountry = URLDecoder.decode(country, StandardCharsets.UTF_8.toString());
+         final String countrySlug = countriesCache.getSlugFor(decodedCountry.toUpperCase());
+         LOG.debug("The slug for the country [{}] is [{}] ", country, countrySlug);
+         return deathCountCache.getDeathCountFor(countrySlug);
+      }
+      return 0;
    }
-
 }
