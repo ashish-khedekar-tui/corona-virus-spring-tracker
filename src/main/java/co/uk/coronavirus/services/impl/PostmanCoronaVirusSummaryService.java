@@ -1,7 +1,6 @@
 package co.uk.coronavirus.services.impl;
 
 import co.uk.coronavirus.generated.CoronaVirusSummary;
-import co.uk.coronavirus.generated.Country;
 import co.uk.coronavirus.services.CoronaVirusSummaryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -13,8 +12,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PostmanCoronaVirusSummaryService implements CoronaVirusSummaryService
